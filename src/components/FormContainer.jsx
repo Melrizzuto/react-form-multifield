@@ -1,11 +1,11 @@
 import { useState } from "react";
-import MyForm from "./MyForm"
+import MyForm from "./MyForm";
 
-function FormContainer({ onAddPost, posts }) {
-    const [isFormVisible, setFormVisible] = useState(false); //form non visibile
+function FormContainer({ onAddPost, posts, onTags, tagsSelected, setTagsSelected, tagList }) {
+    const [isFormVisible, setFormVisible] = useState(false); // form non visibile
 
     const toggleForm = () => {
-        setFormVisible(!isFormVisible); //lo nego per renderlo true
+        setFormVisible(!isFormVisible); // lo nego per renderlo true
     };
 
     return (
@@ -19,9 +19,18 @@ function FormContainer({ onAddPost, posts }) {
             </div>
 
             {/* gestisco la visibilità del form con operatore ternario */}
-            {isFormVisible ? <MyForm onAddPost={onAddPost} posts={posts} /> : null}
+            {isFormVisible ? (
+                <MyForm
+                    onAddPost={onAddPost}
+                    onTags={onTags}
+                    tagsSelected={tagsSelected}
+                    setTagsSelected={setTagsSelected}
+                    tagList={tagList}
+                    posts={posts}
+                />
+            ) : null}
         </>
     );
-};
+}
 
 export default FormContainer;

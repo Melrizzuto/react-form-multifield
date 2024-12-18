@@ -1,10 +1,12 @@
 import { useState } from "react";
 import Card from "./Card";
 import FormContainer from "./FormContainer";
-import { posts } from "../data/posts";
+import { posts, tags } from "../data/posts";
 
 function Main() {
     const [postsList, setPostsList] = useState(posts);
+    const [tagsSelected, setTagsSelected] = useState([]);
+    const tagList = tags(); // Ottieni la lista dei tag
 
     // Funzione per aggiungere un post
     const handleAddPost = (newPost) => {
@@ -18,18 +20,9 @@ function Main() {
     };
 
     // Funzione per gestire i tag di un singolo post
-    const handleTags = (id, tag) => {
-        setPostsList((prevPosts) =>
-            prevPosts.map((post) =>
-                post.id === id
-                    ? {
-                        ...post,
-                        tags: post.tags.includes(tag)
-                            ? post.tags.filter((t) => t !== tag)
-                            : [...post.tags, tag],
-                    }
-                    : post
-            )
+    const handleTags = (tag) => {
+        setTagsSelected((prev) =>
+            prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
         );
     };
 
@@ -52,7 +45,14 @@ function Main() {
                 ))}
 
             {/* Componente FormContainer per gestire il form */}
-            <FormContainer onAddPost={handleAddPost} posts={postsList} />
+            <FormContainer
+                onAddPost={handleAddPost}
+                posts={postsList}
+                onTags={handleTags}
+                tagsSelected={tagsSelected}
+                setTagsSelected={setTagsSelected}
+                tagList={tagList}
+            />
         </main>
     );
 }
